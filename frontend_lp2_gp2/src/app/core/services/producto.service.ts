@@ -22,17 +22,17 @@ export class ProductoService {
 
   //metodos para el admin 
  createProduct(formData: FormData):Observable<Producto>{
-  console.log("Form data recibido create");
+ // console.log("Form data recibido create");
   formData.forEach((value,key)=>{
-    console.log(`${key}:`,value);
+   // console.log(`${key}:`,value);
   })
   return this.http.post<Producto>(this.apiUrl,formData);
  }
 
   updateProduct(id:number,formData: FormData):Observable<Producto>{
-  console.log("Form data recibido update");
+  //console.log("Form data recibido update");
   formData.forEach((value,key)=>{
-    console.log(`${key}:`,value);
+   // console.log(`${key}:`,value);
   })
    return this.http.put<Producto>(`${this.apiUrl}/${id}`,formData);
  }
