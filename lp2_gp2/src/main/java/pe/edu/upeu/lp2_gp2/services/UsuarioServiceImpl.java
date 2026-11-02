@@ -1,5 +1,6 @@
 package pe.edu.upeu.lp2_gp2.services;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upeu.lp2_gp2.dto.RegistroDTO;
@@ -19,9 +20,12 @@ public class UsuarioServiceImpl implements IUsuarioService {
     private final PersonaRepository personaRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioServiceImpl(PersonaRepository personaRepository, UsuarioRepository usuarioRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UsuarioServiceImpl(PersonaRepository personaRepository, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.personaRepository = personaRepository;
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -42,9 +46,12 @@ public class UsuarioServiceImpl implements IUsuarioService {
         p.setTelefono(dto.telefono());
         p.setDireccion(dto.direccion());
         Persona personaGuardada = personaRepository.save(p);
+
         Usuario u = new Usuario();
         u.setUsuario(dto.usuario());
-        u.setPassword(dto.password());
+        //encriptamos la clave con spring security passwordEncoder
+        String passwordEncriptado = passwordEncoder.encode(dto.password());
+        u.setPassword(passwordEncriptado);
         u.setRol(Rol.CLIENTE);
         u.setPersona(personaGuardada);
 
